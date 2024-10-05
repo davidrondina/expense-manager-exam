@@ -48,7 +48,8 @@ const submit = () => {
                         <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Name</label>
                         <input v-model="form.name" type="text" id="name"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                            placeholder="Provide the user name" required />
+                            placeholder="Provide the user name" :disabled="user.roles[0].name.toLowerCase() === 'administrator'" required />
+                            <div v-if="user.roles[0].name.toLowerCase() === 'administrator'" class="my-2 text-sm txt-gray-700">Administrator cannot be modified.</div>
                         <div v-if="page.props.errors.name" class="mt-2 text-sm text-red-700">{{ page.props.errors.name }}</div>
 
                     </div>
@@ -57,13 +58,13 @@ const submit = () => {
                             class="block mb-2 text-sm font-medium text-gray-900">Email</label>
                         <input v-model="form.email" type="email" id="email"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                            placeholder="Provide an email address" required />
+                            placeholder="Provide an email address" :disabled="user.roles[0].name.toLowerCase() === 'administrator'" required />
                         <div v-if="page.props.errors.email" class="mt-2 text-sm text-red-700">{{ page.props.errors.email }}
                         </div>
                     </div>
                     <div>
                         <label for="role" class="block mb-2 text-sm font-medium text-gray-900">Role</label>
-                        <select v-model="form.role" id="role" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <select v-model="form.role" id="role" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" :disabled="user.roles[0].name.toLowerCase() === 'administrator'">
                             <option disabled>Choose a role</option>
                             <option v-for="role in roles" :value="role.id" :selected="role.id === user.roles[0].id">{{ role.name }}</option>
                         </select>
@@ -75,12 +76,12 @@ const submit = () => {
 
                 <div class="flex items-center justify-between">
                     <div>
-                        <ModalLink :href="route('admin.users.delete', props.user.id)" @success="modalRef.close" as="button" class="btn-ghost">Delete</ModalLink>
+                        <ModalLink :href="route('admin.users.delete', props.user.id)" @success="modalRef.close" as="button" :disabled="user.roles[0].name.toLowerCase() === 'administrator'" class="btn-ghost">Delete</ModalLink>
                     </div>
 
                     <div class="flex items-center gap-x-10">
                         <button @click="modalRef.close" type="button" class="btn-ghost">Cancel</button>
-                        <button type="submit" :disabled="form.processing" class="btn-primary">Save</button>
+                        <button type="submit" :disabled="form.processing || user.roles[0].name.toLowerCase() === 'administrator'" class="btn-primary">Save</button>
                     </div>
                 </div>
             </form>

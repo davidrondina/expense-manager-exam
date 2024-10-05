@@ -36,6 +36,9 @@ const props = defineProps({ roles: Object });
                                 Description
                             </th>
                             <th scope="col" class="px-6 py-3">
+                                Date Created
+                            </th>
+                            <th scope="col" class="px-6 py-3">
                                 Action
                             </th>
                         </tr>
